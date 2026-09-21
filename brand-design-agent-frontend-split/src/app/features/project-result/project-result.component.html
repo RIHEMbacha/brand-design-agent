@@ -1,0 +1,200 @@
+<app-shell-layout
+        [title]="project?.name ?? 'Project'"
+        [subtitle]="activeInterface ? activeInterface.name + ' · ' + activeInterface.type : ''"
+>
+    @if (project) {
+        <main class="detail-main result-page page-enter">
+
+            <div class="project-toolbar">
+                <div>
+                    <h1>Generation result</h1>
+                    <p>Review, preview, copy, and download the generated interface.</p>
+                </div>
+
+                <div class="toolbar-actions">
+                    <button
+                            class="btn btn-secondary btn-sm"
+                            [routerLink]="['/projects', project.id]"
+                    >
+                        ← Interfaces
+                    </button>
+
+                    <button
+                            class="btn btn-secondary btn-sm"
+                            [routerLink]="['/projects', project.id, 'workspace']"
+                    >
+                        Back to generator
+                    </button>
+
+                    <button
+                            class="btn btn-primary btn-sm"
+                            type="button"
+                            (click)="downloadZip()"
+                    >
+                        ↓ Download ZIP
+                    </button>
+                </div>
+            </div>
+
+            @if (result; as generatedResult) {
+                <section class="panel result-panel">
+
+                    <div class="panel-head">
+                        <div>
+                            <h2>
+                                {{ artifact?.name ?? activeInterface?.name ?? 'Generated artifact' }}
+                            </h2>
+
+                            <p>
+                                {{ generatedResult.generatedAt }}
+                                ·
+                                {{ artifact?.artifact_type }}
+                            </p>
+                        </div>
+
+                        <span class="pill">
+              {{ generatedFiles.length }} files
+            </span>
+                    </div>
+
+                    <div class="tabs">
+                        <button
+                                class="tab"
+                                [class.active]="tab() === 'design'"
+                                (click)="tab.set('design')"
+                        >
+                            Preview
+                        </button>
+
+                        <button
+                                class="tab"
+                                [class.active]="tab() === 'code'"
+                                (click)="tab.set('code')"
+                        >
+                            Code
+                        </button>
+
+                    </div>
+
+                    @if (tab() === 'design') {
+                        <div class="preview-shell">
+
+                            @if (hasPreview && previewUrl) {
+                                <div class="browser">
+                                    <div class="browser-top">
+                                        <div class="browser-dots">
+                                            <span class="dot"></span>
+                                            <span class="dot"></span>
+                                            <span class="dot"></span>
+                                        </div>
+
+                                        <div class="browser-address">
+                                            Generated preview
+                                        </div>
+                                    </div>
+
+                                    <div class="preview-frame">
+                                        <embed
+                                                [src]="previewUrl"
+                                                type="text/html"
+                                                class="generated-preview"
+                                        >
+                                    </div>
+                                </div>
+                            } @else {
+                                <div class="no-preview">
+                                    <div class="no-preview-icon">⌁</div>
+
+                                    <h3>No visual preview available</h3>
+
+                                    <p>
+                                        This artifact does not contain an HTML file that can be rendered.
+                                        Use the Code tab to inspect the generated files.
+                                    </p>
+
+                                    <button
+                                            class="btn btn-primary"
+                                            (click)="tab.set('code')"
+                                    >
+                                        View generated code
+                                    </button>
+                                </div>
+                            }
+
+                        </div>
+                    }
+
+                    @if (tab() === 'code') {
+                        <div class="code-wrap">
+
+                            @if (generatedFiles.length) {
+                                <div
+                                        class="file-tabs"
+                                        role="tablist"
+                                        aria-label="Generated files"
+                                >
+                                    @for (
+                                        file of generatedFiles;
+                                        track file.path ?? file.name;
+                                        let index = $index
+                                            ) {
+                                        <button
+                                                class="file-tab"
+                                                [class.active]="selectedFileIndex() === index"
+                                                type="button"
+                                                (click)="selectFile(index)"
+                                        >
+                      <span>
+                        {{ file.path ?? file.name }}
+                      </span>
+
+                                            <small>
+                                                {{ file.language ?? 'text' }}
+                                            </small>
+                                        </button>
+                                    }
+                                </div>
+                            }
+
+                            <div class="code-toolbar">
+                <span>
+                  {{ displayedFileName() }}
+                </span>
+
+                                <button
+                                        class="btn btn-secondary btn-sm"
+                                        (click)="copyCode()"
+                                >
+                                    Copy code
+                                </button>
+                            </div>
+
+                            <pre class="code"><code>{{ displayedCode() }}</code></pre>
+
+                        </div>
+                    }
+
+
+                </section>
+            }
+
+            @if (error) {
+                <section class="panel error-panel">
+                    <div class="panel-body">
+                        {{ error }}
+                    </div>
+                </section>
+            }
+
+        </main>
+    } @else {
+        <main class="dashboard">
+            <section class="panel">
+                <div class="panel-body">
+                    Project not found.
+                    <a routerLink="/projects">Back to projects</a>
+                </div>
+            </section>
+        </main>
+    }
+</app-shell-layout>

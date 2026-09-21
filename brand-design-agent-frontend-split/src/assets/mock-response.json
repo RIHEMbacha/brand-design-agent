@@ -1,0 +1,14 @@
+{
+  "design": {
+    "title": "Home concept",
+    "description": "A polished interface generated from the user prompt and project references.",
+    "primaryColor": "#6A5CF5",
+    "components": ["Navigation", "Hero", "Feature cards", "Primary CTA", "Responsive content grid"]
+  },
+  "code": {
+    "language": "html",
+    "fileName": "home.html",
+    "content": "<!doctype html>"
+  },
+  "zipName": "nova-store-home.zip"
+}

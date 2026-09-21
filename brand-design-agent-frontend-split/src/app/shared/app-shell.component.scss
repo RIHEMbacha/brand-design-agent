@@ -1,0 +1,619 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  --gutter: 50px;            /* lavender strip left of the white card   */
+  --rail: 80px;              /* width of the purple shape               */
+  --cap-top-h: 73.8px;       /* height of the curved top   (S-curve)    */
+  --cap-bottom-h: 77.9px;    /* height of the curved bottom (S-curve)   */
+
+  --rail-a: #7772f2;         /* purple, top    */
+  --rail-b: #6d6af0;         /* purple, bottom */
+
+  --page-bg: linear-gradient(180deg, #d1d2e6 0%, #cbcddc 100%);
+  --card-bg: #f9fafc;
+  --card-top: 42px;          /* gap above the white card                */
+  --card-radius: 32px;       /* top-left corner of the white card       */
+}
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+.shell-grid {
+  width: 100%;
+  height: 100vh;
+  flex-direction: row;
+  display: flex;
+  overflow: hidden;
+  background: var(--card-bg) !important;
+
+}
+
+
+
+.sidebar {
+  position: relative;
+
+  width: var(--gutter);
+  height: 100vh;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 22px 0;
+
+  /* must sit above the white card so the purple shape overlaps it */
+  z-index: 50;
+
+  overflow: visible;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.sidebar-logo {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  text-decoration: none;
+
+  border-radius: 11px;
+
+  background: linear-gradient(145deg, #6658f3, #887bff);
+
+  color: white;
+
+  box-shadow: 0 8px 18px rgba(106, 92, 245, .25);
+}
+
+
+.logo-icon {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+
+
+.sidebar-center {
+  --cap-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 73.82'%3E%3Cpath d='M0 0C13.08 40.96 74.84 35.79 80 73.82H0Z'/%3E%3C/svg%3E");
+  --cap-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 77.92'%3E%3Cpath d='M0 0H80C75.39 38.41 11.61 31.83 0 77.92Z'/%3E%3C/svg%3E");
+
+  position: absolute;
+  z-index: 1000;
+
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  height: fit-content;
+
+  width: var(--rail);
+
+  /* shadow has to live on the wrapper, because filter runs
+     before masking when both are on the same element */
+  filter: drop-shadow(8px 6px 12px rgba(60, 58, 120, .12));
+}
+
+
+.sidebar-center::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+          radial-gradient(
+                  120% 55% at 50% 24%,
+                  rgba(255, 255, 255, .07),
+                  transparent 70%
+          ),
+          linear-gradient(
+                  180deg,
+                  var(--rail-a) 0%,
+                  var(--rail-b) 100%
+          );
+
+  -webkit-mask-image:
+          var(--cap-top),
+          var(--cap-bottom),
+          linear-gradient(#000, #000);
+  mask-image:
+          var(--cap-top),
+          var(--cap-bottom),
+          linear-gradient(#000, #000);
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  /* the straight middle overlaps each curve by ~1.4px to hide seams */
+  -webkit-mask-size:
+          var(--rail) var(--cap-top-h),
+          var(--rail) var(--cap-bottom-h),
+          100% calc(100% - var(--cap-top-h) - var(--cap-bottom-h) + 2.8px);
+  mask-size:
+          var(--rail) var(--cap-top-h),
+          var(--rail) var(--cap-bottom-h),
+          100% calc(100% - var(--cap-top-h) - var(--cap-bottom-h) + 2.8px);
+
+  -webkit-mask-position:
+          0 0,
+          0 100%,
+          0 calc(var(--cap-top-h) - 1.4px);
+  mask-position:
+          0 0,
+          0 100%,
+          0 calc(var(--cap-top-h) - 1.4px);
+}
+
+
+/* =========================================================
+   NAV
+   ========================================================= */
+
+.sidebar-nav {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 2.6px;
+
+  /* first icon starts 71px below the top of the shape,
+     last icon ends ~57px above the bottom */
+  padding: 71px 0 56.6px;
+
+  z-index: 2;
+}
+
+
+.side-item {
+  position: relative;
+
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background: transparent;
+
+  color: rgba(255, 255, 255, .92);
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+          background .18s ease,
+          color .18s ease;
+}
+
+
+.side-item svg {
+  width: 20px;
+  height: 20px;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.side-item:hover {
+  background: rgba(255, 255, 255, .14);
+
+  color: #ffffff;
+}
+
+
+.side-item:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+
+/* WHITE ACTIVE TILE */
+
+.side-item.active {
+  background: #ffffff;
+
+  color: #5b57e8;
+
+  box-shadow: 0 4px 12px rgba(40, 34, 140, .18);
+}
+
+
+/* Optional extras from the reference:
+   <span class="side-pro">PRO</span>   green pill beside an icon
+   <span class="side-dot"></span>       orange unread dot
+   <span class="side-dot blue"></span>  blue unread dot          */
+
+.side-pro {
+  position: absolute;
+
+  left: 32px;
+  top: 15px;
+
+  height: 8px;
+
+  padding: 0 3.5px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 4px;
+
+  background: #6dbfa6;
+
+  color: #ffffff;
+
+  font-size: 5px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .04em;
+
+  pointer-events: none;
+}
+
+
+.side-dot {
+  position: absolute;
+
+  top: 8px;
+  right: 8px;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #f6b646;
+
+  pointer-events: none;
+}
+
+
+.side-dot.blue {
+  background: #7fa2e3;
+}
+
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+.sidebar-bottom {
+  margin-top: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.profile-mini {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  border: 3px solid #ffffff;
+
+  background: linear-gradient(145deg, #dfe3ff, #f7ddff);
+
+  color: #6255e9;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 15px rgba(70, 58, 190, .15);
+}
+
+.btn-danger { color: #fff; background: #d94f62; border-color: #d94f62; }
+.btn-danger:hover { background: #bd3f51; border-color: #bd3f51; }
+
+
+/* =========================================================
+   MAIN  (the white card)
+   ========================================================= */
+
+.app-content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+  min-height: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: var(--card-bg);
+
+  box-shadow: 0 0 24px rgba(72, 70, 140, .16);
+}
+
+/* Profile dropdown */
+.profile-menu-panel {
+  position: absolute;
+  left: calc(100% - 50px);
+  bottom: 0;
+  z-index: 1100;
+  min-width: 150px;
+  padding: 6px;
+  border: 1px solid #ebe9f4;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow:
+          0 10px 30px rgba(50, 45, 120, 0.14),
+          0 2px 8px rgba(50, 45, 120, 0.08);
+}
+
+.profile-menu-panel button {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #45445f;
+  text-align: left;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+          background 0.15s ease,
+          color 0.15s ease;
+}
+
+.profile-menu-panel button:hover,
+.profile-menu-panel button:focus-visible {
+  background: #f0efff;
+  color: #6255e9;
+  outline: none;
+}
+/* =========================================================
+   FIXED HEADER
+   ========================================================= */
+
+.topbar {
+  flex: 0 0 68px;
+
+  height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* clear the purple shape (80px) + 40px breathing room */
+  padding: 0 28px 0 28px;
+
+  box-sizing: border-box;
+
+  border-bottom: 1px solid rgba(229, 231, 240, .8);
+
+  background: rgba(249, 250, 252, .94);
+
+  backdrop-filter: blur(20px);
+
+  z-index: 30;
+}
+
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  min-width: 0;
+}
+
+
+.page-title {
+  font-size: 15px;
+  font-weight: 750;
+  color: var(--ink);
+}
+
+
+.breadcrumb {
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+
+.top-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.search-top {
+  min-width: 220px;
+}
+
+
+.search-top .input {
+  height: 38px !important;
+}
+
+
+/* =========================================================
+   ONLY CONTENT SCROLLS
+   ========================================================= */
+
+.content-scroll {
+  flex: 1 1 auto;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 26px 30px 40px calc(var(--rail) + 40px);
+
+  box-sizing: border-box;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+          rgba(110, 100, 240, .28)
+          transparent;
+}
+
+
+.content-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+
+.content-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+.content-scroll::-webkit-scrollbar-thumb {
+  background:
+          rgba(110, 100, 240, .25);
+
+  border-radius: 20px;
+}
+
+
+.content-scroll::-webkit-scrollbar-thumb:hover {
+  background:
+          rgba(110, 100, 240, .45);
+}
+
+
+/* =========================================================
+   MOBILE
+   The sidebar becomes an 80px drawer: no gutter, no card
+   offset, the purple shape sits flush on the drawer's edge.
+   ========================================================= */
+
+.mobile-menu {
+  display: none;
+}
+
+
+@media (max-width: 900px) {
+
+  :host {
+    --gutter: 0px;
+    --card-top: 0px;
+    --card-radius: 0px;
+  }
+
+  .shell-grid {
+    grid-template-columns: 1fr;
+
+    background: var(--card-bg);
+  }
+
+  .sidebar {
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    width: var(--rail);
+
+    background: var(--card-bg);
+
+    /* fully hidden when closed so its shadow can't bleed onto the screen */
+    transform: translateX(-130%);
+    visibility: hidden;
+
+    transition:
+            transform .22s ease,
+            visibility 0s linear .22s;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    visibility: visible;
+
+    transition:
+            transform .22s ease,
+            visibility 0s;
+
+    box-shadow:
+            10px 0 35px rgba(40, 30, 150, .25);
+  }
+
+  .app-content {
+    box-shadow: none;
+  }
+
+  .mobile-menu {
+    display: inline-grid !important;
+  }
+
+  .topbar {
+    padding: 0 18px;
+  }
+
+  .content-scroll {
+    padding: 20px 18px 30px;
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .topbar .search-top {
+    display: none;
+  }
+
+  .content-scroll {
+    padding: 16px 14px 28px;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .sidebar,
+  .side-item {
+    transition: none;
+  }
+}

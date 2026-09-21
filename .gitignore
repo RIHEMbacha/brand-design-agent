@@ -1,0 +1,9 @@
+backend/.venv/
+backend/.env
+__pycache__/
+*.py[cod]
+.idea/workspace.xml
+brand-design-agent-frontend-split/node_modules
+brand-design-agent-frontend-split/dist
+brand-design-agent-frontend-split/.angular
+.idea

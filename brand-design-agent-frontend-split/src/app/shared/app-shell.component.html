@@ -1,0 +1,201 @@
+<div class="shell-grid">
+    <!-- MAIN AREA (white card) -->
+    <section class="app-content">
+        <div class="sidebar-center">
+
+            <!-- BUTTONS: one under another -->
+            <nav class="sidebar-nav">
+                <a
+                        class="side-item"
+                        routerLink="/projects"
+                        (click)="mobileOpen.set(false)"
+                        aria-label="Brand Design Agent"
+                >
+                    <span class="logo-icon">✦</span>
+                </a>
+                <a
+                        class="side-item"
+                        routerLink="/projects"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                        (click)="mobileOpen.set(false)"
+                        title="Projects"
+                        aria-label="Projects"
+                >
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="7.1" cy="7.1" r="3.9"/>
+                        <rect x="13" y="3.2" width="7.8" height="7.8" rx="2.2" opacity=".4"/>
+                        <rect x="3.2" y="13" width="7.8" height="7.8" rx="2.2"/>
+                        <circle cx="16.9" cy="16.9" r="3.9" opacity=".4"/>
+                    </svg>
+                </a>
+
+                <a
+                        class="side-item"
+                        href="javascript:void(0)"
+                        title="Templates"
+                        aria-label="Templates"
+                        (click)="toast.show('Templates are ready to connect to the backend.')"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="4" y="4" width="16" height="16" rx="2"/>
+                        <path d="M8 8h8"/>
+                        <path d="M8 12h6"/>
+                        <path d="M8 16h4"/>
+                    </svg>
+                </a>
+
+                <a
+                        class="side-item"
+                        href="javascript:void(0)"
+                        title="History"
+                        aria-label="History"
+                        (click)="toast.show('Generation history will come from the backend.')"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M3 12a9 9 0 1 0 3-6.7"/>
+                        <path d="M3 4v6h6"/>
+                        <path d="M12 7v5l3 2"/>
+                    </svg>
+                </a>
+
+                <a
+                        class="side-item"
+                        href="javascript:void(0)"
+                        title="Design"
+                        aria-label="Design"
+                        (click)="toast.show('Design tools')"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M12 3v18"/>
+                        <path d="M3 12h18"/>
+                        <circle cx="12" cy="12" r="8"/>
+                    </svg>
+                </a>
+
+                <button
+                        class="side-item"
+                        type="button"
+                        title="Notifications"
+                        aria-label="Notifications"
+                        (click)="toast.show('No new notifications.')"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                        <path d="M10 21h4"/>
+                    </svg>
+                </button>
+
+                <button
+                        class="side-item"
+                        type="button"
+                        title="Settings"
+                        aria-label="Settings"
+                        (click)="toast.show('Settings')"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19 12a7 7 0 0 0-.2-1.6l2-1.5-2-3.4-2.3 1a8 8 0 0 0-2.7-1.5L13.5 2h-4l-.3 3a8 8 0 0 0-2.7 1.5l-2.3-1-2 3.4 2 1.5A7 7 0 0 0 4 12c0 .6.1 1.1.2 1.6l-2 1.5 2 3.4 2.3-1a8 8 0 0 0 2.7 1.5l.3 3h4l.3-3a8 8 0 0 0 2.7-1.5l2.3 1 2.3-1 2-3.4-2-1.5c.1-.5.2-1 .2-1.6Z"/>
+                    </svg>
+                </button>
+                <button
+                        class="profile-mini"
+                        type="button"
+                        title="Open account menu"
+                        aria-label="Open account menu"
+                        [attr.aria-expanded]="profileMenuOpen()"
+                        (click)="toggleProfileMenu($event)"
+                >
+                    AD
+                </button>
+                @if (profileMenuOpen()) {
+                    <div class="profile-menu-panel" role="menu">
+                        <button
+                                type="button"
+                                role="menuitem"
+                                (click)="requestLogout()"
+                        >
+                            Log out
+                        </button>
+                    </div>
+                }
+            </nav>
+
+        </div>
+        <!-- FIXED HEADER -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                        class="icon-btn mobile-menu"
+                        aria-label="Open menu"
+                        type="button"
+                        (click)="toggleMobileMenu()"
+                >
+                    <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                    >
+                        <path d="M4 7h16M4 12h16M4 17h16"/>
+                    </svg>
+                </button>
+
+                <div>
+                    <div class="page-title">{{ title() }}</div>
+
+                    @if (subtitle()) {
+                        <div class="breadcrumb">{{ subtitle() }}</div>
+                    }
+                </div>
+            </div>
+
+
+            <div class="top-actions">
+
+                @if (showSearch()) {
+                    <label class="search-top">
+                        <input
+                                class="input"
+                                placeholder="Search projects…"
+                                (input)="searchChange.emit(($any($event.target)).value)"
+                        >
+                    </label>
+                }
+
+                <button
+                        class="icon-btn"
+                        aria-label="Notifications"
+                        type="button"
+                        (click)="toast.show('No new notifications.')"
+                >
+                    <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                    >
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                        <path d="M10 21h4"/>
+                    </svg>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- ONLY CONTENT SCROLLS -->
+        <main class="content-scroll">
+            <ng-content />
+        </main>
+
+    </section>
+
+</div>

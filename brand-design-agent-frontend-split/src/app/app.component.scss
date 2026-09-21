@@ -1,0 +1,42 @@
+.app-shell {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+.app-shell::before,
+.app-shell::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 999px;
+  filter: blur(25px);
+  opacity: .6;
+}
+.app-shell::before {
+  width: 520px;
+  height: 300px;
+  top: -120px;
+  right: 4%;
+  background: radial-gradient(circle, rgba(107,92,245,.2), rgba(110,183,255,.05) 60%, transparent 70%);
+}
+.app-shell::after {
+  width: 520px;
+  height: 280px;
+  bottom: -140px;
+  left: 8%;
+  background: radial-gradient(circle, rgba(248,155,232,.13), rgba(111,215,255,.05) 55%, transparent 70%);
+}
+.toast {
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:20;
+  padding:12px 15px;
+  border-radius:14px;
+  background:#11152c;
+  color:#fff;
+  box-shadow:var(--shadow);
+  font-size:11px;
+  animation:fadeUp .2s ease both;
+}

@@ -1,0 +1,27 @@
+<app-shell-layout [title]="project?.name ?? 'Project'" [subtitle]="activeInterface ? activeInterface.name + ' · ' + activeInterface.type : ''">
+  @if (project) {
+    <main class="detail-main chat-page page-enter">
+      @if (error) { <div class="panel"><div class="panel-body">{{ error }}</div></div> }
+      <div class="project-toolbar">
+        <div><h1>Generate an interface</h1><p>Describe what you want to create and use your project references as context.</p></div>
+        <div class="toolbar-actions">
+          <button class="btn btn-secondary btn-sm" [routerLink]="['/projects', project.id]">← Interfaces</button>
+          <button class="btn btn-secondary btn-sm" type="button" (click)="openFiles()">Reference files <span class="heading-count">{{ files.length }}</span></button>
+        </div>
+      </div>
+
+      <section class="prompt-box chat-composer">
+        <div class="prompt-top"><h2>Describe the interface</h2><span class="pill">AI generator</span></div>
+        <textarea class="textarea" [(ngModel)]="prompt" placeholder="Example: Create a premium SaaS dashboard with a soft lavender background, clear navigation, rounded cards and a strong primary CTA."></textarea>
+        <div class="prompt-chips">
+          @for (chip of suggestions; track chip) { <button class="prompt-chip" type="button" (click)="prompt = chip">{{ chip }}</button> }
+        </div>
+        <div class="prompt-actions"><span>Reference files and the project design direction are included automatically.</span><button class="btn btn-primary" type="button" [disabled]="loading" (click)="regenerate()">{{ loading ? 'Generating…' : 'Generate interface ↗' }}</button></div>
+      </section>
+
+    </main>
+  } @else {
+    <div class="dashboard"><section class="panel"><div class="panel-body">Project not found. <a routerLink="/projects">Back to projects</a></div></section></div>
+  }
+
+</app-shell-layout>

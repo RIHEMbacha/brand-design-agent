@@ -1,0 +1,55 @@
+<main class="auth-page page-enter">
+  <section class="auth-visual">
+    <div class="auth-copy">
+      <a class="brand" routerLink="/projects">
+        <span class="brand-mark">✦</span>
+        <span><strong>Brand Design Agent</strong><small>AI interface studio</small></span>
+      </a>
+      <h1>Design the next interface, faster.</h1>
+      <p>Create your workspace, bring your references and turn prompts into editable interface concepts and production-ready code.</p>
+    </div>
+  </section>
+
+  <section class="auth-card-wrap">
+    <div class="auth-card">
+      <h2>Create your account</h2>
+      <p>Use a Gmail address to create your workspace.</p>
+
+      <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" class="input" type="text" placeholder="Your name" formControlName="name" autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" class="input" type="email" placeholder="you@gmail.com" formControlName="email" autocomplete="email">
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            <small class="auth-error">Enter a valid email address.</small>
+          }
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" class="input" type="password" placeholder="••••••••" formControlName="password" autocomplete="new-password">
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <small class="auth-error">Password must contain at least 6 characters.</small>
+          }
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">Confirm password</label>
+          <input id="confirmPassword" class="input" type="password" placeholder="••••••••" formControlName="confirmPassword" autocomplete="new-password">
+          @if (passwordMismatch) {
+            <small class="auth-error">Passwords do not match.</small>
+          }
+        </div>
+
+        <button class="btn btn-primary" type="submit" [disabled]="form.invalid || passwordMismatch">Create account</button>
+      @if (error) { <small class="auth-error">{{ error }}</small> }
+      </form>
+
+      <div class="auth-footer">Already have an account? <a routerLink="/auth/login">Sign in</a></div>
+    </div>
+  </section>
+</main>

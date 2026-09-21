@@ -1,0 +1,64 @@
+<app-shell-layout
+  [title]="project?.name ?? 'Project'"
+  [subtitle]="project ? 'Interfaces · ' + interfaces.length + ' screens' : ''">
+  @if (project) {
+    <main class="interfaces-page page-enter">
+      @if (error) { <div class="panel"><div class="panel-body">{{ error }}</div></div> }
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow">Project workspace</div>
+          <h1>My interfaces</h1>
+          <p>Design, generate and refine every screen in {{ project.name }}.</p>
+        </div>
+        <div class="heading-actions">
+          <a class="btn btn-secondary" routerLink="/projects">← Back to projects</a>
+          <button class="btn btn-secondary" type="button" (click)="openFiles()">Reference files <span class="heading-count">{{ files.length }}</span></button>
+          <button class="btn btn-primary" type="button" (click)="addInterface()">＋ New interface</button>
+        </div>
+      </div>
+
+      <section class="interface-grid" aria-label="Project interfaces">
+        <button class="new-interface-card" type="button" (click)="addInterface()">
+          <span class="new-interface-icon">＋</span>
+          <strong>New interface</strong>
+          <span>Start from a fresh screen</span>
+        </button>
+
+        @for (screen of interfaces; track trackById($index, screen)) {
+          <a class="interface-card" href="" (click)="$event.preventDefault(); openInterface(screen)">
+            <div class="screen-preview" [class.mobile-preview]="screen.type === 'Mobile'">
+              <div class="preview-window">
+                <span class="preview-line wide"></span>
+                <span class="preview-line"></span>
+                <div class="preview-blocks">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="preview-footer"></div>
+              </div>
+            </div>
+            <div class="interface-card-footer">
+              <div>
+                <h2>{{ screen.name }}</h2>
+                <p>Edited recently · {{ screen.type }}</p>
+              </div>
+              <div class="card-actions">
+                <button class="file-button" type="button" (click)="$event.preventDefault(); $event.stopPropagation(); openFiles()">Files</button>
+                <button class="more-button" type="button" aria-label="Delete interface" (click)="deleteArtifact(screen, $event)">×</button>
+              </div>
+            </div>
+          </a>
+        }
+      </section>
+    </main>
+  } @else {
+    <main class="interfaces-page">
+      <section class="empty-state panel">
+        <div class="panel-body">
+          Project not found.
+          <a routerLink="/projects">Back to projects</a>
+        </div>
+      </section>
+    </main>
+  }
+
+</app-shell-layout>
