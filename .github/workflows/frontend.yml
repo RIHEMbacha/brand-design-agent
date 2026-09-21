@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - "frontend/**"
+      - "brand-design-agent-frontend-split/**"
       - ".github/workflows/frontend.yml"
 
 jobs:
