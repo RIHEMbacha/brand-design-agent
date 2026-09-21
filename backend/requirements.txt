@@ -1,7 +1,7 @@
 fastapi>=0.115,<1
 uvicorn[standard]>=0.30,<1
 python-multipart>=0.0.9,<1
-
+gunicorn
 pydantic>=2.8,<3
 pydantic-settings>=2.4,<3
 python-dotenv>=1.0,<2
